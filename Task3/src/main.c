@@ -4,8 +4,8 @@
 #include <dirent.h>
 #include <string.h>
 
-void* print_elems_full_path(char *f_name);
-void* print_folder_elems(char *f_name);
+void* print_elems_full_path(void *f_name);
+void* print_folder_elems(void *f_name);
 void get_full_path(char *, char *, char **);
 
 enum {COUNT_ELEMS, GET_FULL_PATH};
@@ -44,7 +44,8 @@ void get_full_path(char *f_name, char *dir_name, char **fullPath) {
 }
 
 void* print_folder_elems(void *threadArg) {
-  char *f_name = (char *)threadArg;
+  char *f_name;
+  f_name = (char *)threadArg;
   DIR *d;
   struct dirent *dir;
   if((d = opendir(f_name)) != NULL) {
@@ -63,7 +64,8 @@ void* print_folder_elems(void *threadArg) {
 }
 
 void* print_elems_full_path(void *threadArg) {
-  char *f_name = (char *)threadArg;
+  char *f_name;
+  f_name = (char *)threadArg;
   DIR *d;
   struct dirent *dir;
   if((d = opendir(f_name)) != NULL) {
