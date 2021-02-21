@@ -1,6 +1,6 @@
 EXE_NAME = Stack
 SRC_PATH = src
-BIN_PATH = bin
+#BIN_PATH = bin
 
 INCLUDES = -I $(SRC_PATH)/
 
@@ -8,7 +8,4 @@ INCLUDES = -I $(SRC_PATH)/
 SOURCES = src/main.c src/stack.c
 		
 all:
-	gcc -g $(INCLUDES) $(SOURCES) -o $(BIN_PATH)/$(EXE_NAME)
-
-#clean:
-	#rm $(BIN_PATH) main.o stack.o
+	gcc -g $(INCLUDES) $(SOURCES) -o $(EXE_NAME)
