@@ -20,9 +20,8 @@ typedef struct node {
 } Node;
 
 typedef struct _linkedList {
-  Node* head; // first node
-  Node* tail; // last node
-  Node* curr;
+  Node* head;
+  Node* tail;
   size_t capacity;
   size_t size;
 } LinkedList;

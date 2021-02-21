@@ -10,7 +10,7 @@ BOOL create(Stack *stack, size_t sz) {
 }
 
 void addHead(LinkedList* list, int type, void* data) {
-  if(list->capacity > list->size) {
+  if(list->capacity >= list->size) {
     fprintf(stderr, "No more nodes could be created, please resize your stack.");
     return;
   }
@@ -30,7 +30,6 @@ void addHead(LinkedList* list, int type, void* data) {
 void initLinkedList(LinkedList* list, size_t sz) {
   list->head = NULL;
   list->tail = NULL;
-  list->curr = NULL;
   list->capacity = 0;
   list->size = sz;
 }
@@ -70,21 +69,29 @@ size_t size(const Stack* stack) {
 }
 
 void Resize(Stack* stack, size_t n) {
-  // TODO
+  if(stack->size < n || stack->capacity < n)
+    stack->size = n;
+  else {
+    while(stack->capacity != n) {
+      pop(stack);
+    }
+    stack->size = n;
+  }
 }
 
 void display_data(const Stack* stack) {
+  printf("Display stack data:\n");
   Node* node = stack->head;
   while(node != NULL) {
     switch(node->type) {
     case TYPENAME_INT:
-      printf("%d\n", *((int*)node->data));
+      printf("- %d\n", *((int*)node->data));
       break;
     case TYPENAME_DOUBLE:
-      printf("%lf\n",*((double*)node->data));
+      printf("- %lf\n",*((double*)node->data));
       break;
     case TYPENAME_STRING:
-      printf("%s\n", (char *)node->data);
+      printf("- %s\n", (char *)node->data);
     }
     node = node->next;
   }
