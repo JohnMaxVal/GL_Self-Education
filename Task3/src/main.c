@@ -36,13 +36,6 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-void get_full_path(char *f_name, char *dir_name, char **fullPath) {
-  *fullPath = (char *)malloc(strlen(f_name) + strlen(dir_name) + 2);
-  strcpy(*fullPath, f_name);
-  strcat(*fullPath, "\\\\");
-  strcat(*fullPath, dir_name);
-}
-
 void* print_folder_elems(void *threadArg) {
   char *f_name;
   f_name = (char *)threadArg;
@@ -76,10 +69,17 @@ void* print_elems_full_path(void *threadArg) {
 	continue;
       if(!strcmp(dir_name, ".."))
 	continue;
-      get_full_path(f_name, dir_name);
+      get_full_path(f_name, dir_name, &f_name);
       printf("[%s]\n", fullPath);
       free(fullPath);
     }
   }
   closedir(d);
+}
+
+void get_full_path(char *f_name, char *dir_name, char **fullPath) {
+  *fullPath = (char *)malloc(strlen(f_name) + strlen(dir_name) + 2);
+  strcpy(*fullPath, f_name);
+  strcat(*fullPath, "\\\\");
+  strcat(*fullPath, dir_name);
 }
