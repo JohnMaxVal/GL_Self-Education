@@ -19,23 +19,31 @@ int main(int argc, char *argv[]) {
   printf("See \'--help\' for available commands.\n\n");
 
   char commands[256];
- 
+  int n = 0, type;
+  fib_64 sum;
+  
   while(1) {
-    int n = 0;
-    int type = DEFAULT;
-    fib_64 sum;
-    
     get_command_line(commands);
+    
+    if(!strcmp(commands, "exit")) {
+      exit(0);
+    }
+    else if(!strcmp(commands, "--help")) {
+      print_help();
+      continue;
+    }
+    
     if(parse(commands, &n, &type) == FALSE)
-      return -1;
+      continue;
 
     if(n < 2) {
       fprintf(stderr, "n must be greater that 2.\n");
       return -1;
     }
-    
+
     sum = fib(n);
-    printf("The sum of Fibanacci sequence = %ll", sum);
+    printf("The sum of Fibanacci sequence = %lld\n", (type == NEGA && n%2==0) ? -sum : sum);
+    type = DEFAULT;
   }
   return 0;
 }
@@ -59,10 +67,6 @@ void get_command_line(char *commands) {
 }
 
 bool parse(char *cmd, int* n, int* type) {
-  if(!strcmp(cmd, "exit")) {
-    return FALSE;
-  }
-
   int i = 0;
   int c;
   while(cmd[i] != '\0') {
@@ -71,8 +75,9 @@ bool parse(char *cmd, int* n, int* type) {
       case 'n':
 	while(cmd[++i] == ' ')
 	  ;
-	for(*n = 0; isdigit(cmd[i]); i++)
-	  *n = 10 * *n + (cmd[i] - '0');
+	*n = 0;
+	while(isdigit(cmd[i]))
+	  *n = 10 * *n + (cmd[i++] - '0');
 	break;
       case 'o':
 	*type = NEGA;
@@ -81,6 +86,11 @@ bool parse(char *cmd, int* n, int* type) {
 	break;
       }
     }
+    else if(cmd[i] == ' ')
+      while(isspace(cmd[i]))
+	++i;
+    else
+      ++i;
   }
   return TRUE;
 }
@@ -88,7 +98,7 @@ bool parse(char *cmd, int* n, int* type) {
 void print_help(void) {
   puts("\n"
        " -n [:amount]    Amount of numbers to calculate.\n"
-       " -o              Yield the sequence of \'negafibonacci\' numbers.\n"
+       " -o              Yield the sequence of \'negafibonacci\' numbers. Use only with [-n] option.\n"
        " exit            Close the program.\n"
        "\n");
 }
