@@ -8,13 +8,15 @@ void* print_elems_full_path(void *f_name);
 void* print_folder_elems(void *f_name);
 void get_full_path(char *, char *, char **);
 
-enum {COUNT_ELEMS, GET_FULL_PATH};
-
 int main(int argc, char *argv[]) {
   if(argc < 2) {
     fprintf(stderr, "Folder path does not specify.\n");
     exit(0);
   }
+
+  printf("Computate folder information in different threads.\n");
+  printf("1-st thread is responsible for counting elements in a specified folder.\n");
+  printf("2-d thread is responsible for printing out full path of elements in a specific folder.\n");
 
   char *f_name = *++argv;
   int rc1, rc2;
@@ -25,7 +27,7 @@ int main(int argc, char *argv[]) {
     exit(0);
   }
   
-  if((rc2 = pthread_create(&thread1, NULL, print_folder_elems, (void*)f_name))) {
+  if((rc2 = pthread_create(&thread2, NULL, print_elems_full_path, (void*)f_name))) {
     fprintf(stderr, "Thread creation failed: %d.\n", rc2);
     exit(0);
   }
