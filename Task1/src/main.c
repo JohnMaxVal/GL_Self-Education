@@ -2,10 +2,10 @@
 #include "stack.h"
 
 void print_help(void);
+void freeStack(Stack *);
 
 int main(int argc, char **argv) {
   printf("Simple program for basic manipulation of Stack (LIFO) data structure which supports only three types: int, double, string.\n\n");
-  // Create instance of Stack
   int stack_size;
   printf("Enter stack size: ");
   scanf("%d", &stack_size);
@@ -19,7 +19,7 @@ int main(int argc, char **argv) {
     fprintf(stderr, "Instance could not be created.\n");
     exit(0);
   }
-
+  
   int type = TYPENAME_UNSPECIFIED;
   
   printf("See \'--help\' to read about a specific available command.\n\n");
@@ -85,8 +85,25 @@ int main(int argc, char **argv) {
     }
     printf("\n--------------------------------------\n");
   }
+  freeStack(&stack);
   system("cls");
   return 0;
+}
+
+void freeStack(Stack *stack) {
+  Node *node = stack->head;
+  if(node == NULL)
+    return;
+  else if(node == stack->tail) {
+    stack->head = stack->tail = NULL;
+    stack->capacity--;
+  }
+  else {
+    stack->head = stack->head->next;
+    stack->capacity--;
+    free(node);
+  }
+  freeStack(stack);
 }
 
 void print_help(void) {
